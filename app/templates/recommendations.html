@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Recommendations for {{ movie_title }}</title>
+</head>
+<body>
+    <h1>Recommendations for "{{ movie_title }}"</h1>
+    <ul>
+        {% for recommendation in recommendations %}
+            <li>{{ recommendation }}</li>
+        {% endfor %}
+    </ul>
+    <br>
+    <a href="/">Back to Home</a>
+</body>
+</html>
