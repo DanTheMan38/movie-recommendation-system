@@ -1,0 +1,11 @@
+      metric  n_neighbors      rmse  precision_at_5
+0     cosine            5  0.963661           0.220
+1     cosine           10  0.944672           0.132
+2     cosine           20  0.913900           0.140
+3     cosine           30  0.915411           0.100
+4     cosine           50  0.900560           0.160
+5  euclidean            5  0.924139           0.020
+6  euclidean           10  0.926824           0.020
+7  euclidean           20  0.970004           0.020
+8  euclidean           30  0.958882           0.028
+9  euclidean           50  0.975207           0.040

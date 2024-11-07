@@ -3,15 +3,17 @@
 <head>
     <meta charset="UTF-8">
     <title>Recommendations for {{ movie_title }}</title>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
-    <h1>Recommendations for "{{ movie_title }}"</h1>
-    <ul>
-        {% for recommendation in recommendations %}
-            <li>{{ recommendation }}</li>
-        {% endfor %}
-    </ul>
-    <br>
-    <a href="/">Back to Home</a>
+    <div class="container">
+        <h1>Recommendations for "{{ movie_title }}"</h1>
+        <ul>
+            {% for recommendation in recommendations %}
+                <li>{{ recommendation }}</li>
+            {% endfor %}
+        </ul>
+        <a href="/">Back to Home</a>
+    </div>
 </body>
 </html>

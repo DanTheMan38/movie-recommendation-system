@@ -3,20 +3,16 @@
 <head>
     <meta charset="UTF-8">
     <title>Movie Recommendation System</title>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
-    <h1>Welcome to the Movie Recommendation System</h1>
-    <form action="/" method="post">
-        <label for="movie_title">Enter a movie title:</label>
-        <input type="text" id="movie_title" name="movie_title" required>
-        <br><br>
-        <label for="recommendation_type">Select recommendation type:</label>
-        <select id="recommendation_type" name="recommendation_type">
-            <option value="content">Content-Based Filtering</option>
-            <option value="collaborative">Collaborative Filtering</option>
-        </select>
-        <br><br>
-        <input type="submit" value="Get Recommendations">
-    </form>
+    <div class="container">
+        <h1>Welcome to the Movie Recommendation System</h1>
+        <form method="post">
+            <label for="movie_title">Enter a movie title:</label>
+            <input type="text" id="movie_title" name="movie_title" required>
+            <input type="submit" value="Get Recommendations">
+        </form>
+    </div>
 </body>
 </html>

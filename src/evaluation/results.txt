@@ -1,0 +1,4 @@
+Collaborative Filtering RMSE: 0.9338
+Collaborative Filtering Average Precision@5: 0.1200
+Collaborative Filtering Average Recall@5: 0.0380
+Collaborative Filtering Average F1 Score@5: 0.0169

@@ -1,23 +1,25 @@
 from flask import Flask, render_template, request
 import pandas as pd
-import numpy as np
 import os
 import joblib
 from scipy.sparse import csr_matrix
+import sys
+
+# Get the project root directory
+PROJECT_ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
+
+# Add the project root directory to sys.path
+sys.path.append(PROJECT_ROOT)
 
 # Initialize the Flask application
 app = Flask(__name__)
 
-# Load models and data
-processed_data_path = os.path.join('data', 'processed')
-model_save_path = os.path.join('models')
+# Load models and data using absolute paths
+processed_data_path = os.path.join(PROJECT_ROOT, 'data', 'processed')
+model_save_path = os.path.join(PROJECT_ROOT, 'models')
 
-# Load the content-based filtering data
+# Load movie data and collaborative filtering model
 movies = pd.read_csv(os.path.join(processed_data_path, 'movies_content.csv'))
-cosine_sim = joblib.load(os.path.join(model_save_path, 'cosine_sim.pkl'))
-indices = joblib.load(os.path.join(model_save_path, 'indices.pkl'))
-
-# Load the collaborative filtering model
 knn_model = joblib.load(os.path.join(model_save_path, 'knn_model.pkl'))
 ratings = pd.read_csv(os.path.join(processed_data_path, 'ratings_movies_cleaned.csv'))
 
@@ -38,24 +40,35 @@ data = ratings['rating'].values      # Ratings
 
 item_user_sparse = csr_matrix((data, (row, col)), shape=(len(movie_ids), len(user_ids)))
 
-# Import the recommendation functions
-from src.models.content_based_filter import get_content_recommendations
+def get_collaborative_recommendations(movie_title, n_recommendations=5):
+    # Try to find an exact match first (case-insensitive)
+    exact_matches = movies[movies['title'].str.lower() == movie_title.lower()]
+    if exact_matches.empty:
+        # If no exact match, try partial match
+        partial_matches = movies[movies['title'].str.contains(movie_title, case=False, na=False)]
+        if partial_matches.empty:
+            return ["Movie not found in the dataset."]
+        else:
+            # Use the first partial match
+            movie_id = partial_matches.iloc[0]['movieId']
+    else:
+        # Use the exact match
+        movie_id = exact_matches.iloc[0]['movieId']
 
-def get_collaborative_recommendations(movie_id, n_recommendations=5):
+    # Check if movie_id exists in collaborative filtering data
     if movie_id not in movie_id_to_index:
         return ["Movie ID not found in the dataset."]
-    
+
+    # Get index in item-user matrix
     movie_idx = movie_id_to_index[movie_id]
-    
-    # Get similar movies
-    distances, indices_knn = knn_model.kneighbors(item_user_sparse[movie_idx], n_neighbors=n_recommendations+1)
-    
-    # Exclude the input movie itself
-    rec_indices = indices_knn.flatten()[1:]
-    
-    # Map indices back to movie IDs
+
+    # Find k similar movies
+    distances, indices = knn_model.kneighbors(item_user_sparse[movie_idx], n_neighbors=n_recommendations+1)
+
+    # Exclude the input movie itself from recommendations
+    rec_indices = indices.flatten()[1:]
     rec_movie_ids = [movie_ids[i] for i in rec_indices]
-    
+
     # Get movie titles
     recommended_movies = movies[movies['movieId'].isin(rec_movie_ids)]
     return recommended_movies['title'].tolist()
@@ -64,25 +77,8 @@ def get_collaborative_recommendations(movie_id, n_recommendations=5):
 def index():
     if request.method == 'POST':
         # Get the input from the form
-        movie_title = request.form.get('movie_title')
-        recommendation_type = request.form.get('recommendation_type')
-
-        if recommendation_type == 'content':
-            recommendations = get_content_recommendations(
-                title=movie_title,
-                cosine_sim=cosine_sim,
-                df=movies,
-                indices=indices,
-                n_recommendations=5
-            )
-            rec_titles = recommendations['title'].tolist()
-        else:
-            # Get movieId from the title
-            movie_id = movies[movies['title'] == movie_title]['movieId'].values
-            if len(movie_id) == 0:
-                rec_titles = ["Movie not found in the dataset."]
-            else:
-                rec_titles = get_collaborative_recommendations(movie_id[0], n_recommendations=5)
+        movie_title = request.form.get('movie_title').strip()
+        rec_titles = get_collaborative_recommendations(movie_title, n_recommendations=5)
 
         return render_template('recommendations.html', recommendations=rec_titles, movie_title=movie_title)
 
