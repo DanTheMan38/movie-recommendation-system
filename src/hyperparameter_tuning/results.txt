@@ -1,11 +1,28 @@
-      metric  n_neighbors      rmse  precision_at_5
-0     cosine            5  0.963661           0.220
-1     cosine           10  0.944672           0.132
-2     cosine           20  0.913900           0.140
-3     cosine           30  0.915411           0.100
-4     cosine           50  0.900560           0.160
-5  euclidean            5  0.924139           0.020
-6  euclidean           10  0.926824           0.020
-7  euclidean           20  0.970004           0.020
-8  euclidean           30  0.958882           0.028
-9  euclidean           50  0.975207           0.040
+===== COLLABORATIVE FILTERING RESULTS =====
+
+Metric        | N_neighbors |   RMSE     | Precision@5
+--------------|-------------|------------|-------------
+cosine        | 5           | 0.963661   | 0.220
+cosine        | 10          | 0.944672   | 0.132
+cosine        | 20          | 0.913900   | 0.140
+cosine        | 30          | 0.915411   | 0.100
+cosine        | 50          | 0.900560   | 0.160
+euclidean     | 5           | 0.924139   | 0.020
+euclidean     | 10          | 0.926824   | 0.020
+euclidean     | 20          | 0.970004   | 0.020
+euclidean     | 30          | 0.958882   | 0.028
+euclidean     | 50          | 0.975207   | 0.040
+
+===== CONTENT-BASED FILTERING RESULTS =====
+
+Metric        |    RMSE     | Precision@5
+--------------|-------------|-------------
+cosine        | 1.307100    | 0.012
+euclidean     | 1.342158    | 0.008
+
+===== HYBRID FILTERING RESULTS =====
+
+Metric        | N_neighbors | Alpha |   RMSE     | Precision@5
+--------------|-------------|-------|------------|-------------
+cosine        | 5           | 0.5   | 1.006312   | 0.020
+cosine        | 10          | 0.5   | 1.008018   | 0.000

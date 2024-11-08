@@ -3,7 +3,6 @@ numpy
 scikit-learn
 scipy
 flask
-gunicorn
 surprise
 sqlalchemy
 joblib

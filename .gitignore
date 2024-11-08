@@ -5,9 +5,6 @@ venv/
 __pycache__/
 *.py[cod]
 
-# Ignore Jupyter notebook checkpoints (if any)
-.ipynb_checkpoints/
-
 # Ignore data files (adjust paths as necessary)
 data/raw/
 data/processed/

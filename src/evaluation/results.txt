@@ -1,4 +1,5 @@
-Collaborative Filtering RMSE: 0.9338
-Collaborative Filtering Average Precision@5: 0.1200
-Collaborative Filtering Average Recall@5: 0.0380
-Collaborative Filtering Average F1 Score@5: 0.0169
+===== COLLABORATIVE FILTERING RESULTS (METRIC: COSINE, N_NEIGHBORS = 6) =====
+
+Metric        | N_neighbors |   RMSE     | Precision@5
+--------------|-------------|------------|-------------
+cosine        | 6           | 0.930000   | 0.210
