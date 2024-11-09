@@ -22,7 +22,7 @@ model_save_path = os.path.join(PROJECT_ROOT, 'models')
 
 # Load movie data and collaborative filtering model
 movies = pd.read_csv(os.path.join(processed_data_path, 'movies_content.csv'))
-knn_model = joblib.load(os.path.join(model_save_path, 'collaborative/knn_model.pkl'))
+knn_model = joblib.load(os.path.join(model_save_path, 'knn_model.pkl'))
 ratings = pd.read_csv(os.path.join(processed_data_path, 'ratings_movies_cleaned.csv'))
 
 # Map userId and movieId to indices
